@@ -57,6 +57,7 @@ TODO:
 * **Convenience**: Add methods allowing:
 	1. 	Show first revision
 	2. List one field for all revisions of a model, like body.
+	3. See https://github.com/Hyra/revision for hints.
 * **API Usability**: Allow calling methods without passing in the Model. For example restoreVersionByDate("2011-12-05 01:01:01") needing a $row_id or $Model.
 * **Increase Eficency**: Dynamically install database tables for each Revisionable Model; duplicate Model's tables on first Model::beforeSave(). Tables would be names something like revisionable__pages. Model->data is inserted on each Model::beforeSave(). This allows for selection instead of having to hunt through deserialized data.
 

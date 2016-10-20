@@ -16,7 +16,9 @@ class RevisionableBehavior extends ModelBehavior {
 	protected $_defaults = array(
 		'revisionableModel'=>'Revisionable.Revision'
 	);
+	
 	public $_disabled = false;
+	
 	private $revModel;
 
 	/**
@@ -52,7 +54,11 @@ class RevisionableBehavior extends ModelBehavior {
                         $name = $this->userModel;
                 }
 
-		$model = ClassRegistry::init($name);
+                if (PHP5) {
+                        $model = ClassRegistry::init($name);
+                } else {
+                        $model =& ClassRegistry::init($name);
+                }
 
                 if (empty($model)) {
                         trigger_error(__('Auth::getModel() - Model is not set or could not be found'), E_USER_WARNING);

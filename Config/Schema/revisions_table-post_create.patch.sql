@@ -1,0 +1,1 @@
+ALTER TABLE `revisions` CHANGE COLUMN `data` `data` LONGBLOB NOT NULL ;

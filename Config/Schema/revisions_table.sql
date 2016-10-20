@@ -1,4 +1,3 @@
-
 CREATE TABLE IF NOT EXISTS `revisions` (
   `id` varchar(36) NOT NULL,
   `row_id` varchar(36) NOT NULL,

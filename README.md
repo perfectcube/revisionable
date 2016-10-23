@@ -6,15 +6,21 @@ This plugin adds a revisionable behavior to any of your models by saving a seria
 Setup
 -----
 
-1) Install the revisions table into your project using Console/cake schema
+1) Grab the Plug as a git submodule; composer on the way.
+
+	cd {DOCROOT}/app/
+	git submodule add git://github.com/perfectcube/revisionable Plugin/Revisionable
+	git submodule init; git submodule update;
+
+2) Install the revisions table into your project using Console/cake schema
 	
 	Console/cake schema update -v -p Revisionable
 
-2) Add the behavior to your model
+3) Add the behavior to your model
 
 	public $actAs = array('Revisionable.Revisionable');
 
-3) CakePHP's schema create script doesn't account for longblob. After you run `Console/cake schema update -v -p Revisionable` run the included MySQL patch file: `Config/Schema/revisions_table-post_create.patch.sql`
+4) CakePHP's schema create script doesn't account for longblob. After you run `Console/cake schema update -v -p Revisionable` run the included MySQL patch file: `Config/Schema/revisions_table-post_create.patch.sql`
 
 Configuration
 ----------------------

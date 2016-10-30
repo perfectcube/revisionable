@@ -53,12 +53,8 @@ class RevisionableBehavior extends ModelBehavior {
                 if (!$name) {
                         $name = $this->userModel;
                 }
-
-                if (PHP5) {
-                        $model = ClassRegistry::init($name);
-                } else {
-                        $model =& ClassRegistry::init($name);
-                }
+				
+				$model = ClassRegistry::init($name);
 
                 if (empty($model)) {
                         trigger_error(__('Auth::getModel() - Model is not set or could not be found'), E_USER_WARNING);
@@ -77,7 +73,7 @@ class RevisionableBehavior extends ModelBehavior {
 	 * @param  object $Model
 	 * @return boolean
 	 */
-	 public function beforeSave(&$Model,$options = null) {
+	 public function beforeSave($Model,$options = null) {
 
 		//If we are disabled, or if this is not an update but a create, then dont make a revision yet
 		if ($this->_disabled || !isset($Model->id) ) {

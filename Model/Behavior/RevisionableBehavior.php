@@ -28,7 +28,7 @@ class RevisionableBehavior extends ModelBehavior {
 	* @param   array   $config
 	* @return  void
 	*/
-	public function setup($Model, $config = array()) {
+	public function setup(Model $Model, $config = array()) {
 
 		$config = (is_array($config) && !empty($config))
 		    ? Set::merge($this->_defaults, $config)
@@ -48,7 +48,7 @@ class RevisionableBehavior extends ModelBehavior {
 	 * @return object A reference to a model object
 	 * @access public
 	 */
-        function &getModel($name = null) {
+	public function &getModel($name = null) {
                 $model = null;
                 if (!$name) {
                         $name = $this->userModel;
@@ -73,7 +73,7 @@ class RevisionableBehavior extends ModelBehavior {
 	 * @param  object $Model
 	 * @return boolean
 	 */
-	 public function beforeSave($Model,$options = null) {
+	 public function beforeSave(Model $Model,$options = null) {
 
 		//If we are disabled, or if this is not an update but a create, then dont make a revision yet
 		if ($this->_disabled || !isset($Model->id) ) {
@@ -105,7 +105,7 @@ class RevisionableBehavior extends ModelBehavior {
 	 * @param string/int $row_id  if using uuid this is a string, if using auto increment this is int
 	 * @return mixed // array('YYYY-MM-DD HH:MM:SS'=>array('Model->alias'=>$data))
 	 */
-	 function revisions(&$Model, $row_id = null){
+	 public function revisions(&$Model, $row_id = null){
 		if(!$row_id || !$Model){
 			return false;
 		}
@@ -135,7 +135,7 @@ class RevisionableBehavior extends ModelBehavior {
 	 * @param string $date
 	 * @return boolean
 	 */
-	 function restoreVersionByDate(&$Model, $row_id = null, $date = null){
+	 public function restoreVersionByDate(&$Model, $row_id = null, $date = null){
 		if(!$row_id || !$Model){
 			return false;
 		}

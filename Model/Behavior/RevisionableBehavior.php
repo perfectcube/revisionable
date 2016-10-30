@@ -28,7 +28,7 @@ class RevisionableBehavior extends ModelBehavior {
 	* @param   array   $config
 	* @return  void
 	*/
-	public function setup(&$Model, $config = array()) {
+	public function setup($Model, $config = array()) {
 
 		$config = (is_array($config) && !empty($config))
 		    ? Set::merge($this->_defaults, $config)

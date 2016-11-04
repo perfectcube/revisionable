@@ -93,6 +93,7 @@ class RevisionableBehavior extends ModelBehavior {
 			$this->log("Created a revision of {$Model->alias} / {$Model->id}",'debug');
 			return true;
 		}else{
+			Dev::speek('Shit Shit Shit Shit Shit Shit.');
 			Dev::speek($this->revModel->validationErrors);
 			Dev::speek($this->revModel->invalidFields());
 			$this->log("Failed to created a revision of {$Model->alias} / {$Model->id} with:".print_r($revision,1),'error');

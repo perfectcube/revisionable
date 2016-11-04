@@ -86,8 +86,9 @@ class RevisionableBehavior extends ModelBehavior {
 		$revision[$this->revModel->alias]['row_id'] = $Model->id;
 		$revision[$this->revModel->alias]['model'] = $Model->alias;
 		$revision[$this->revModel->alias]['data'] = serialize($Model->read());
-	
-		if($revisioned = $this->revModel->save($revision)){
+		
+		$revisioned = $this->revModel->save($revision);
+		if($revisioned){
 			$this->log("Created a revision of {$Model->alias} / {$Model->id}",'debug');
 			return true;
 		}else{

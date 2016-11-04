@@ -89,6 +89,7 @@ class RevisionableBehavior extends ModelBehavior {
 		
 		$revisioned = $this->revModel->save($revision);
 		if($revisioned){
+			Dev::speek('Huzzah! Revision created.');
 			$this->log("Created a revision of {$Model->alias} / {$Model->id}",'debug');
 			return true;
 		}else{

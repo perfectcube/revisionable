@@ -31,12 +31,13 @@ class RevisionableBehavior extends ModelBehavior {
 	public function setup(Model $Model, $config = array()) {
 
 		$config = (is_array($config) && !empty($config))
-		    ? Set::merge($this->_defaults, $config)
-		    : $this->_defaults;
+			? Set::merge($this->_defaults, $config)
+			: $this->_defaults;
 
 		$this->settings[$Model->alias] = $config;
 
 		$this->revModel = $this->getModel($this->settings[$Model->alias]['revisionableModel']);
+		Dev::speek($this->revModel->name);
 	}
 
 
@@ -49,20 +50,20 @@ class RevisionableBehavior extends ModelBehavior {
 	 * @access public
 	 */
 	public function &getModel($name = null) {
-                $model = null;
-                if (!$name) {
-                        $name = $this->userModel;
-                }
-				
-				$model = ClassRegistry::init($name);
+		$model = null;
+		if (!$name) {
+			$name = $this->userModel;
+		}
+		Dev::speek($name);
+		$model = ClassRegistry::init($name);
 
-                if (empty($model)) {
-                        trigger_error(__('Auth::getModel() - Model is not set or could not be found'), E_USER_WARNING);
-                        return null;
-                }
-
-                return $model;
-        }
+		if (empty($model)) {
+			trigger_error(__('Auth::getModel() - Model is not set or could not be found'), E_USER_WARNING);
+			return null;
+		}
+		Dev::speek($model->name);
+		return $model;
+	}
 
 	/**
 	 * beforeSave model callback
@@ -73,8 +74,12 @@ class RevisionableBehavior extends ModelBehavior {
 	 * @param  object $Model
 	 * @return boolean
 	 */
-	 public function beforeSave(Model $Model,$options = null) {
+	public function beforeSave(Model $Model,$options = null) {
 
+
+		Dev::speek($this->_disabled);
+		Dev::speek($Model->id);
+		
 		//If we are disabled, or if this is not an update but a create, then dont make a revision yet
 		if ($this->_disabled || !isset($Model->id) ) {
 			return true;
@@ -108,7 +113,9 @@ class RevisionableBehavior extends ModelBehavior {
 	 * @param string/int $row_id  if using uuid this is a string, if using auto increment this is int
 	 * @return mixed // array('YYYY-MM-DD HH:MM:SS'=>array('Model->alias'=>$data))
 	 */
-	 public function revisions(&$Model, $row_id = null){
+	public function revisions(&$Model, $row_id = null){
+		Dev::speek($Model->name);
+		Dev::speek($row_id);
 		if(!$row_id || !$Model){
 			return false;
 		}
@@ -138,7 +145,7 @@ class RevisionableBehavior extends ModelBehavior {
 	 * @param string $date
 	 * @return boolean
 	 */
-	 public function restoreVersionByDate(&$Model, $row_id = null, $date = null){
+	public function restoreVersionByDate(&$Model, $row_id = null, $date = null){
 		if(!$row_id || !$Model){
 			return false;
 		}

@@ -117,13 +117,26 @@ class RevisionableBehavior extends ModelBehavior {
 	public function revisions(&$Model, $row_id = null){
 		Dev::speek($Model->name);
 		Dev::speek($row_id);
+
 		if(!$row_id || !$Model){
 			return false;
 		}
+
 		$results = array();
 		$name = $this->revModel->alias;
 
-		if($revisions = $this->revModel->find('all',array('conditions'=>array($name.'.model'=>$Model->alias, $name.'.row_id'=>$row_id)))){
+		$conditions = array('conditions'=>array(
+				$name.'.model'=>$Model->alias, 
+				$name.'.row_id'=>$row_id
+		));
+		
+		Dev::speek($conditions);
+		
+		$revisions = $this->revModel->find('all',$conditions);
+		
+		Dev::speek($revisions);
+		
+		if($revisions){
 			if(is_array($revisions)){
 				foreach($revisions as $rev){
 					$results[$rev[$name]['created']] = unserialize($rev[$name]['data']);

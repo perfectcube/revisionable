@@ -7,9 +7,9 @@
  * this behavior is able to backup data by using serialize and globs.  This means revisions aren't really searchable
  * but they are atleast stored perfectly
  *
- * @package     revisionable
+ * @package	 revisionable
  * @subpackage  revisionable.models.behaviors
- * @author      Analogrithems <analogrithems@gmail.com>
+ * @author	  Analogrithems <analogrithems@gmail.com>
  */
 class RevisionableBehavior extends ModelBehavior {
 
@@ -37,7 +37,27 @@ class RevisionableBehavior extends ModelBehavior {
 		$this->settings[$Model->alias] = $config;
 
 		$this->revModel = $this->getModel($this->settings[$Model->alias]['revisionableModel']);
-		Dev::speek($this->revModel->name);
+		// Dev::speek($this->revModel->name);
+		
+		// see if we have any settings for the model being passed in
+		$missing_settings = (
+			!isset($this->settings[$Model->alias])
+		) ? true : false;
+		
+		if ($missing_settings) {
+			$this->settings[$Model->alias] = array(
+				// a list of fields in the $Model->alias Model 
+				// that need to be ignored when revisioning
+				'ignore' => array()
+			);
+		}
+		
+		$this->settings[$Model->alias] = array_merge(
+			$this->settings[$Model->alias], (array)$settings
+		);
+		
+		Dev::speek($this->settings);
+		
 	}
 
 
@@ -76,8 +96,8 @@ class RevisionableBehavior extends ModelBehavior {
 	 */
 	public function beforeSave(Model $Model,$options = null) {
 		
-		Dev::speek($this->_disabled);
-		Dev::speek($Model->id);
+		// Dev::speek($this->_disabled);
+		// Dev::speek($Model->id);
 	
 		// return true by default
 		$status = true;
@@ -96,11 +116,11 @@ class RevisionableBehavior extends ModelBehavior {
 			Dev::speek($revisioned);
 			
 			if($revisioned){
-				Dev::speek('Huzzah! save worked.');
+				// Dev::speek('Huzzah! save worked.');
 				$this->log("Created a revision of {$Model->alias} / {$Model->id}",'debug');
 				$status = true;
 			}else{
-				Dev::speek('shit shit shit shit shit shit shit. shit.');
+				// Dev::speek('shit shit shit shit shit shit shit. shit.');
 				$this->log("Failed to created a revision of {$Model->alias} / {$Model->id} with:".print_r($revision,1),'error');
 				$status = false;
 			}			

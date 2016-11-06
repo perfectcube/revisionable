@@ -21,6 +21,7 @@ class RevisionableBehavior extends ModelBehavior {
 	
 	private $revModel;
 
+	private $ignore_fields = array();
 	/**
 	* Behavior configuration
 	*
@@ -38,10 +39,18 @@ class RevisionableBehavior extends ModelBehavior {
 
 		$this->revModel = $this->getModel($this->settings[$Model->alias]['revisionableModel']);
 		
-		$this->ignore[$Model->alias] = array();
+		// $this->ignore_fields[$Model->alias] = array();
 		
-		Dev::speek($this->settings);
-		Dev::speek($this->settings[$Model->alias]);
+		$have_ignore_fields = (
+			isset($this->settings[$Model->alias]['ignore'])
+			&& !empty($this->settings[$Model->alias]['ignore'])
+		) ? true : false;
+
+		if($have_ignore_fields){
+			Dev::speek($this->settings[$Model->alias]['ignore']);			
+		}
+		
+
 		
 		// Dev::speek($this->revModel->name);
 		

@@ -75,34 +75,39 @@ class RevisionableBehavior extends ModelBehavior {
 	 * @return boolean
 	 */
 	public function beforeSave(Model $Model,$options = null) {
-
-
+		
 		Dev::speek($this->_disabled);
 		Dev::speek($Model->id);
-		
+	
+		// return true by default
+		$status = true;
+	
 		//If we are disabled, or if this is not an update but a create, then dont make a revision yet
-		if ($this->_disabled || !isset($Model->id) ) {
-			return true;
-		}
+		$need_revision = (!$this->_disabled || isset($Model->id)) ? true : false;
+		if ($need_revision) {
+			//Set recurision to 1
+			$Model->recursive = 1;
 
-		//Set recurision to 1
-		$Model->recursive = 1;
-
-		$revision[$this->revModel->alias]['row_id'] = $Model->id;
-		$revision[$this->revModel->alias]['model'] = $Model->alias;
-		$revision[$this->revModel->alias]['data'] = serialize($Model->read());
+			$revision[$this->revModel->alias]['row_id'] = $Model->id;
+			$revision[$this->revModel->alias]['model'] = $Model->alias;
+			$revision[$this->revModel->alias]['data'] = serialize($Model->read());
 		
-		$revisioned = $this->revModel->save($revision);
-		Dev::speek($revisioned);
-		if($revisioned){
-			Dev::speek('Huzzah! save worked.');
-			$this->log("Created a revision of {$Model->alias} / {$Model->id}",'debug');
-			return true;
-		}else{
-			Dev::speek('shit shit shit shit shit shit shit. shit.');
-			$this->log("Failed to created a revision of {$Model->alias} / {$Model->id} with:".print_r($revision,1),'error');
-			return false;
+			$revisioned = $this->revModel->save($revision);
+			Dev::speek($revisioned);
+			
+			if($revisioned){
+				Dev::speek('Huzzah! save worked.');
+				$this->log("Created a revision of {$Model->alias} / {$Model->id}",'debug');
+				$status = true;
+			}else{
+				Dev::speek('shit shit shit shit shit shit shit. shit.');
+				$this->log("Failed to created a revision of {$Model->alias} / {$Model->id} with:".print_r($revision,1),'error');
+				$status = false;
+			}			
 		}
+		
+		return $status;
+		
 	 }
 		
 	/**

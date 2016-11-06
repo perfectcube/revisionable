@@ -21,6 +21,8 @@ class RevisionableBehavior extends ModelBehavior {
 	
 	private $revModel;
 
+	private $settings = array();
+
 	/**
 	* Behavior configuration
 	*

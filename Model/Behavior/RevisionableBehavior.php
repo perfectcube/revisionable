@@ -21,8 +21,6 @@ class RevisionableBehavior extends ModelBehavior {
 	
 	private $revModel;
 
-	public $settings = array();
-
 	/**
 	* Behavior configuration
 	*
@@ -39,26 +37,30 @@ class RevisionableBehavior extends ModelBehavior {
 		$this->settings[$Model->alias] = $config;
 
 		$this->revModel = $this->getModel($this->settings[$Model->alias]['revisionableModel']);
+		
+		$this->ignore[$Model->alias] = array();
+		
+		Dev::speek($this->settings);
+		Dev::speek($this->settings[$Model->alias]);
+		
 		// Dev::speek($this->revModel->name);
 		
 		// see if we have any settings for the model being passed in
-		$missing_settings = (
-			!isset($this->settings[$Model->alias])
-		) ? true : false;
-		
-		if ($missing_settings) {
-			$this->settings[$Model->alias] = array(
-				// a list of fields in the $Model->alias Model 
-				// that need to be ignored when revisioning
-				'ignore' => array()
-			);
-		}
-		
-		$this->settings[$Model->alias] = array_merge(
-			$this->settings[$Model->alias], (array)$settings
-		);
-		
-		Dev::speek($this->settings);
+		// $missing_settings = (
+		// 	!isset($this->settings[$Model->alias])
+		// ) ? true : false;
+		//
+		// if ($missing_settings) {
+		// 	$this->settings[$Model->alias] = array(
+		// 		// a list of fields in the $Model->alias Model
+		// 		// that need to be ignored when revisioning
+		// 		'ignore' => array()
+		// 	);
+		// }
+		//
+		// $this->settings[$Model->alias] = array_merge(
+		// 	$this->settings[$Model->alias], (array)$settings
+		// );
 		
 	}
 
